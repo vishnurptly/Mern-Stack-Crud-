@@ -28,6 +28,7 @@ function Users() {
     useEffect(() => {
       axios.get('http://localhost:3000/getall')
         .then(res => setUser(res.data))
+       
         .catch(err => console.error(err));
       
        

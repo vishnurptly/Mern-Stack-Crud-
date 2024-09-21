@@ -4,7 +4,7 @@ const userModel = require('../model/UserModel')
 
 
 
- const createPost = async (req,res) => {
+ const createPost = async (req,res,next) => {
     try{
         const user = new userModel(req.body);
         user.save();
@@ -16,30 +16,30 @@ const userModel = require('../model/UserModel')
     
 
 }
-module.exports ={createPost};
 
 
 
- const updateUser = async (req,res) =>{
+
+ const updateUser = async (req,res,next) =>{
     try{
-        const user = await userModel.findById(req.param.id);
+     const user= await userModel.findByIdAndUpdate(req.params.id ,req.body,{new:true})
         if(!user){
-            res.status(404).json('post not found')
+            return res.status(404).json({message : " No blogs found"});
         }
-        await userModel.findByIdAndUpdate(req.param.id,{$set:req.body})
-        res.status(200).json('update successfully')
+       
+      return  res.status(200).json('update successfully');
     }
     catch(err){
-        res.status(500).json(err)
+        res.status(500).json(err);
     }
 }
-module.exports ={updateUser};
 
 
 
- const deleteUser = async (req,res) =>{
+ const deleteUser = async (req,res,next) =>{
     try{
-        await userModel.findByIdAndDelete(req.param.id);
+        await userModel.findByIdAndDelete(req.params.id)
+        
         res.status(200).json("delete item successfully")
 
     }
@@ -47,32 +47,35 @@ module.exports ={updateUser};
         res.status(500).json(err)
     }
 }
-module.exports ={deleteUser};
 
 
 
- const getAllList = async (req,res) =>{
+ const getAllList = async (req,res,next) =>{
     try{
-    await userModel.find()
-    res.status(200).json("get all list is successfully")
+   const users = await userModel.find()
+   res.status(200).json(users)
+    // res.status(200).json("get all list is successfully")
+    
     }
     catch(err){
         res.status(500).json(err)
     }
 }
-module.exports ={getAllList};
 
 
- const getbyid = async (req,res) =>{
+ const getbyid = async (req,res,next) =>{
+
     try{
-        const user = await userModel.findById(req.param.id)
-        res.status(200).json(user)
+      const users = await userModel.findById(req.params.id)
+            
+        res.status(200).json(users)
     }
+
     catch(err){
         res.status(500).json(err)
     }
 
 }
-module.exports ={getbyid};
+module.exports ={getbyid,getAllList,deleteUser,updateUser,createPost};
 
 
