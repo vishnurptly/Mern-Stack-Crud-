@@ -10,6 +10,10 @@ import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { TextField,IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+
 
 //  const navigate = useNavigate();
 
@@ -22,7 +26,7 @@ function Users() {
 
 
     const [user, setUser] = useState([])
-   
+    const [searchTerm, setSearchTerm] = useState('');
     
     
     useEffect(() => {
@@ -44,21 +48,49 @@ function Users() {
       
      
     }
+
+    const handleSearch = (event) => {
+     
+      const value = event.target.value.toLowerCase();
+      
+      setSearchTerm(value);
+      if(!value){
+        window.location.reload
+      }else{
+      
+      const filtered = user.filter((item) =>
+        item.name.toLowerCase().includes(value) || item.email.toLowerCase().includes(value)
+      );
+      setUser(filtered);
+     
+    };
+  }
     
 
   return (
     <div>
+      
+      {/* Search Input */}
+      <TextField
+        label="Search"
+        variant="outlined"
+        value={searchTerm}
+        onChange={handleSearch}
+        fullWidth
+        margin="normal"
+      />
      
      <TableContainer component={Paper}>
       <Table sx={{ minWidth:100}} aria-label="simple table">
         <TableHead>
-          <TableRow>
+          <TableRow  sx={{background:'radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(170,73,93,1) 100%)'}}>
             
-            <TableCell align="right">NAME</TableCell>
-            <TableCell align="right">AGE</TableCell>
-            <TableCell align="right">EMAIL</TableCell>
-            <TableCell align="right">
-            <Button variant="text"  
+            <TableCell align="right" sx={{  color: "#fff" }}>NAME</TableCell>
+            <TableCell align="right" sx={{  color: "#fff" }}>AGE</TableCell>
+            <TableCell align="right" sx={{  color: "#fff" }}>EMAIL</TableCell>
+            <TableCell align="right" sx={{ color: "#fff" }}>
+            <Button variant="text"
+            sx={{backgroundColor: "#3f11b1", color: "#fff" }}  
               component={Link}
               to="/create"  
               >Create</Button>
@@ -68,20 +100,25 @@ function Users() {
         <TableBody >
             
           {user.map((row) => (
-            <TableRow
+            <TableRow 
             
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            key={row.id}
+            sx={{ "&:nth-of-type(odd)": { backgroundColor: "#f5f5f5" }, "&:hover": { backgroundColor: "#e0e0e0" } }}
             >
              
-              <TableCell align="right" key={row._id} >{row.name}</TableCell>
+              <TableCell align="right"  >{row.name}</TableCell>
               <TableCell align="right">{row.age}</TableCell>
               <TableCell align="right">{row.email}</TableCell>
               <TableCell align="right">
-              <Button variant="contained"  sx={{ margin: '8px ' }}
-              component={Link}
-              to={`/update/${row._id}`}  
-              >Edite</Button>
-              <Button variant="contained" onClick={() => deleteidtem(row._id)}>Delete</Button>
+              
+               <IconButton color="primary" component={Link}  to={`/update/${row._id}`} >
+                  <EditIcon />
+                </IconButton>
+
+                <IconButton color="secondary" onClick={() => deleteidtem(row._id)}>
+                  <DeleteIcon />
+                </IconButton>
+              
               </TableCell>
             </TableRow>
           ))}

@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import Box from '@mui/material/Box';
+
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
-
+import { Grid, Container } from '@mui/material';
 
 
 function CreateUser() {
@@ -27,53 +27,68 @@ function CreateUser() {
     }
   return (
     <div>
-      <Box
-      component="form"
-      sx={{ display: 'flex', flexDirection: 'column', width: '350px', gap: 2,border:'solid 1px' , borderRadius:'10px',marginLeft:'40%' }}
-      noValidate
-      onSubmit={handleSubmit}
-    >
-      <Typography variant="h3"sx={{ marginLeft:"110px"}} component="h3">Create</Typography>
+      
 
-     
-       
-      <TextField 
-      id="outlined-basic" 
-      sx={{width: '300px',marginLeft:'20px'}}
-      label="Email" 
-      type="email"
-      name='email'
-      
-      variant="outlined"
-      onChange={(e) => setEmail(e.target.value)}
-      
-      />
 
-      <TextField
-       id="outlined-basic" 
-       sx={{width: '300px',marginLeft:'20px',marginTop:'10px'}}
-       label="Name" 
-       type="text"
-       name='names'
-       variant="outlined" 
-      
-       onChange={(e) => setName(e.target.value)}
-       
-       />
-      
-      <TextField 
-      id="outlined-basic" 
-      sx={{width: '300px',marginLeft:'20px'}}
-      label="Age" 
-     
-      name='age'
-      variant="outlined" 
-      onChange={(e) => setAge(e.target.value)}
-      
-      />
-      
-      <Button type="submit"  variant="contained">Submit</Button>
-    </Box>
+    <Container maxWidth="xs"  sx={{ mt: 5,border:'solid 1px',borderRadius:'10px',background:'linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%)' }}>
+    <Typography variant="h3"sx={{ textAlign:'center'}} component="h3">Add </Typography>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+          {/* Name Field */}
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              sx={{background:'#ffff'}}
+              label="Name"
+              type="text"
+               name='name'
+              variant="outlined"
+              onChange={(e) => setName(e.target.value)}
+              required
+              
+            />
+          </Grid>
+          
+          {/* Email Field */}
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              sx={{background:'#ffff'}}
+              label="Email"
+              type="email"
+              name='email'
+              variant="outlined"
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </Grid>
+
+          {/* Address Field */}
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              sx={{background:'#ffff'}}
+              label="Age"
+              variant="outlined"
+              onChange={(e) => setAge(e.target.value)}
+              required
+            />
+          </Grid>
+
+          {/* Submit Button */}
+          <Grid item xs={12}>
+            <Button
+              fullWidth
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+    </Container>
     </div>
   )
 }
